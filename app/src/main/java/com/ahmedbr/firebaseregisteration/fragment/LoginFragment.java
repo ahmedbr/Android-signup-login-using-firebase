@@ -2,12 +2,14 @@ package com.ahmedbr.firebaseregisteration.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ahmedbr.firebaseregisteration.R;
 import com.ahmedbr.firebaseregisteration.model.User;
@@ -36,8 +38,7 @@ public class LoginFragment extends Fragment {
 
     // TODO: Rename and change types and number of parameters
     public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
-        return fragment;
+        return new LoginFragment();
     }
 
     @Override
@@ -46,7 +47,7 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_login_in, container, false);
@@ -59,9 +60,15 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 User user = new User();
-                user.setEmail(emailEditText.getText().toString());
-                user.setPassword(passEditText.getText().toString());
-                listener.onLoginClicked(user);
+                String email = emailEditText.getText().toString().trim();
+                String pass = passEditText.getText().toString().trim();
+                if (!email.equals("") && !pass.equals("")) {
+                    user.setEmail(email);
+                    user.setPassword(pass);
+                    listener.onLoginClicked(user);
+                } else {
+                    Toast.makeText(getContext(), "invalid email or password", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -105,6 +112,7 @@ public class LoginFragment extends Fragment {
         // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
         void onLoginClicked(User user);
+
         void onNavigationToSignupClicked();
     }
 }

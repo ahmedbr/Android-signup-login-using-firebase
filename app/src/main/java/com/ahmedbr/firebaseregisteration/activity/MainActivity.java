@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         hello = findViewById(R.id.hello_text_view);
         if (user != null) {
-            hello.setText(String.valueOf(hello.getText().toString() + user.getEmail()));
+            hello.setText(String.valueOf(hello.getText().toString() + " " + user.getEmail()));
         }
     }
 }

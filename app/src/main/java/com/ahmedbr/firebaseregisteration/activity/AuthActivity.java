@@ -32,7 +32,7 @@ public class AuthActivity extends AppCompatActivity implements LoginFragment.OnF
 
         loginFragment = LoginFragment.newInstance();
         signUpFragment = SignUpFragment.newInstance();
-        onNavigationToSignupClicked();
+        onNavigateToLoginClicked();
 
         mAuth = FirebaseAuth.getInstance();
 //        updateUI(currentUser);

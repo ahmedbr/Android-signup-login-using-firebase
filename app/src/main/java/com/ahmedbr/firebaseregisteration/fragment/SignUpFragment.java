@@ -2,12 +2,14 @@ package com.ahmedbr.firebaseregisteration.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ahmedbr.firebaseregisteration.R;
 import com.ahmedbr.firebaseregisteration.model.User;
@@ -25,6 +27,7 @@ public class SignUpFragment extends Fragment {
 
     EditText emailEditText;
     EditText passEditText;
+    EditText fullNameEditText;
     Button loginButton;
     Button signupButton;
     private OnFragmentInteractionListener listener;
@@ -35,8 +38,7 @@ public class SignUpFragment extends Fragment {
 
     // TODO: Rename and change types and number of parameters
     public static SignUpFragment newInstance() {
-        SignUpFragment fragment = new SignUpFragment();
-        return fragment;
+        return new SignUpFragment();
     }
 
     @Override
@@ -45,13 +47,14 @@ public class SignUpFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         emailEditText = view.findViewById(R.id.emailEditText);
         passEditText = view.findViewById(R.id.passwordEditText);
+        fullNameEditText = view.findViewById(R.id.full_name_edit_text);
         loginButton = view.findViewById(R.id.login_button);
         signupButton = view.findViewById(R.id.signup_button);
 
@@ -65,10 +68,21 @@ public class SignUpFragment extends Fragment {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User();
-                user.setEmail(emailEditText.getText().toString());
-                user.setPassword(passEditText.getText().toString());
-                listener.onSignupClicked(user);
+                String email = emailEditText.getText().toString().trim();
+                String pass = passEditText.getText().toString().trim();
+                String fullName = fullNameEditText.getText().toString();
+                User user;
+                if (!email.equals("") && !pass.equals("") && fullName.length() != 0) {
+                    user = new User(email, pass, fullName);
+//                    user.setEmail(email);
+//                    user.setPassword(pass);
+//                    user.setName(fullName);
+                    listener.onSignupClicked(user);
+                } else if (fullName.length() == 0) {
+                    Toast.makeText(getContext(), "Full Name is required! ", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "invalid email or password", Toast.LENGTH_LONG).show();
+                }
             }
         });
         return view;
